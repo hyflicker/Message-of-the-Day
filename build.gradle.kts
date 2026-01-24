@@ -3,7 +3,7 @@ plugins {
     id("hytale-mod") version "0.+"
 }
 
-group = "com.example"
+group = "com.hyflicker"
 version = "0.1.0"
 val javaVersion = 25
 
@@ -17,6 +17,7 @@ repositories {
 dependencies {
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.jspecify)
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 hytale {
