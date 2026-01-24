@@ -10,7 +10,7 @@ A robust, lightweight **Hytale** server plugin designed to greet players with cu
 * **Dynamic Placeholders:** Supports `%player%` in both title and subtitle to automatically insert the player's display name.
 * **Auto-Generating Config:** Generates a dedicated configuration folder and file in the directory where the JAR is located.
 * **Commented JSON Support:** The `config.json` uses `Strictness.LENIENT` parsing, allowing you to include `//` comments for instructions without breaking the plugin.
-* **Live Reloading:** Update your messages in real-time without restarting the server.
+* **Live Reloading:** Update your messages in real-time without restarting the server. **(Coming Soon)**
 
 ---
 
