@@ -17,5 +17,6 @@ public class MOTD_Plugin extends JavaPlugin {
     protected void setup() {
         ModConfig.get();
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, OnPlayerJoin::onPlayerReady);
+        this.getCommandRegistry().registerCommand(new Command(this.getName()));
     }
 }
