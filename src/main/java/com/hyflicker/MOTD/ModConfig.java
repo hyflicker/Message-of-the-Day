@@ -53,15 +53,18 @@ public class ModConfig {
 
             if (!Files.exists(path)) {
                 String defaultContent =
-                        "// INSTRUCTIONS:\n" +
-                                "// Use %player% to insert the player's name.\n\n" +
-                                "// EXAMPLES:\n" +
-                                "// \"Happy Spooky Season, %player%!\"\n" +
-                                "// \"Merry Christmas, %player%!\"\n\n" +
-                                "{\n" +
-                                "  \"primaryMessage\": \"Welcome To The Server\",\n" +
-                                "  \"secondaryMessage\": \"%player% has joined\"\n" +
-                                "}";
+                        """
+                                // INSTRUCTIONS:
+                                // Use %player% to insert the player's name.
+                                
+                                // EXAMPLES:
+                                // "Happy Spooky Season, %player%!"
+                                // "Merry Christmas, %player%!"
+                                
+                                {
+                                  "primaryMessage": "Welcome To The Server",
+                                  "secondaryMessage": "%player% has joined"
+                                }""";
 
                 Files.writeString(path, defaultContent, StandardCharsets.UTF_8);
                 LOGGER.atInfo().log("Created new config with comments at: " + path.toAbsolutePath());
