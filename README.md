@@ -10,7 +10,23 @@ A robust, lightweight **Hytale** server plugin designed to greet players with cu
 * **Dynamic Placeholders:** Supports `%player%` in both title and subtitle to automatically insert the player's display name.
 * **Auto-Generating Config:** Generates a dedicated configuration folder and file in the directory where the JAR is located.
 * **Commented JSON Support:** The `config.json` uses `Strictness.LENIENT` parsing, allowing you to include `//` comments for instructions without breaking the plugin.
-* **Live Reloading:** Update your messages in real-time without restarting the server. **(Coming Soon)**
+* **Live Reloading & Testing:** Update your messages in real-time without restarting the server.
+
+---
+
+## 🛠 Commands & Permissions
+
+All commands require the `hytale.admin` permission node (standard for Operators/Admins).
+
+| Command | Description |
+| :--- | :--- |
+| `/motd` | Displays the help and usage menu. |
+| `/motd reload` | Instantly reloads `config.json` changes. |
+| `/motd test` | Previews the MOTD title on your screen. |
+
+
+
+> **Note:** The `/motd test` command must be run by a player in-game. It uses `world.execute()` to safely bridge the Hytale Command Thread to the World Thread for component access.
 
 ---
 
