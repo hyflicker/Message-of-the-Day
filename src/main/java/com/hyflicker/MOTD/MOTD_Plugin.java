@@ -1,5 +1,8 @@
 package com.hyflicker.MOTD;
 
+import com.hyflicker.MOTD.Commands.Motd;
+import com.hyflicker.MOTD.Configuration.ModConfig;
+import com.hyflicker.MOTD.onPlayerJoin.OnPlayerJoin;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
@@ -16,7 +19,15 @@ public class MOTD_Plugin extends JavaPlugin {
     @Override
     protected void setup() {
         ModConfig.get();
-        this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, OnPlayerJoin::onPlayerReady);
-        this.getCommandRegistry().registerCommand(new Command(this.getName()));
+
+        UpdateAvailable.loadVersionFromManifest();
+
+        this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, this::onPlayerReady);
+        this.getCommandRegistry().registerCommand(new Motd(this.getName()));
+    }
+
+    public void onPlayerReady(PlayerReadyEvent event) {
+        OnPlayerJoin.welcomeBanner(event);
+        UpdateAvailable.checkOnJoin(event);
     }
 }
