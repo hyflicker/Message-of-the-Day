@@ -48,7 +48,7 @@ public class UpdateAvailable {
 
                     // Use the helper instead of !equalsIgnoreCase
                     assert currentVersion != null;
-                    if (isUpdateAvailable(currentVersion, normalizedLatest)) {
+                    if (isUpdateAvailable(normalizedLatest)) {
                         sendUpdateNotice(player, latest);
                     }
                 }
@@ -101,8 +101,9 @@ public class UpdateAvailable {
         ));
     }
 
-    private static boolean isUpdateAvailable(String current, String latest) {
-        String[] currentParts = current.split("\\.");
+    private static boolean isUpdateAvailable(String latest) {
+        assert UpdateAvailable.currentVersion != null;
+        String[] currentParts = UpdateAvailable.currentVersion.split("\\.");
         String[] latestParts = latest.split("\\.");
         int length = Math.max(currentParts.length, latestParts.length);
 
