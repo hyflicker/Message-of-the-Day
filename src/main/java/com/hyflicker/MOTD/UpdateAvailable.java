@@ -21,11 +21,6 @@ public class UpdateAvailable {
     private static final String VERSION_API_URL = "https://github.hyflicker.com/api/v1/mod-version";
     private static final String currentVersion = loadVersionFromManifest();
 
-    /**
-     * Reads the version directly from resources/manifest.json
-     *
-     * @return
-     */
     public static String loadVersionFromManifest() {
         try (var is = UpdateAvailable.class.getResourceAsStream("/manifest.json")) {
             if (is != null) {
