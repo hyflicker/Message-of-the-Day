@@ -36,7 +36,8 @@ public class OnPlayerJoin{
                 formatMessage(bannerConfig.getPrimaryTitle(), player),
                 formatMessage(bannerConfig.getSecondaryTitle(), player),
                 bannerConfig.isMajor,
-                (String)null,
+//                (String)null,
+                null,
                 bannerConfig.duration,
                 bannerConfig.fadeInDuration,
                 bannerConfig.fadeOutDuration
