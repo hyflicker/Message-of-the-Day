@@ -47,6 +47,7 @@ public class UpdateAvailable {
                             : latest;
 
                     // Use the helper instead of !equalsIgnoreCase
+                    assert currentVersion != null;
                     if (isUpdateAvailable(currentVersion, normalizedLatest)) {
                         sendUpdateNotice(player, latest);
                     }
