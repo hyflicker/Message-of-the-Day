@@ -1,6 +1,7 @@
 package com.hyflicker.MOTD.Commands;
 
 import com.hyflicker.MOTD.Commands.Config.Config;
+import com.hyflicker.MOTD.Commands.Players.Player;
 import com.hyflicker.MOTD.Configuration.ModConfig;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
@@ -17,6 +18,7 @@ public class Motd extends CommandBase {
         this.addSubCommand(new Test());
         this.addSubCommand(new Announcement());
         this.addSubCommand(new Config());
+        this.addSubCommand(new Player());
     }
     @Override
     protected void executeSync(@Nonnull CommandContext ctx) {
