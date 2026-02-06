@@ -38,15 +38,16 @@ public class ModConfig {
     }
 
     public static class WelcomeBanner {
-        public String primaryTitle;
-        public String secondaryTitle;
-        public boolean isMajor;
-        public float duration;
-        public float fadeInDuration;
-        public float fadeOutDuration;
-        public Boolean randomizeTitle;
-        public String permGroup;
-        public boolean enabled;
+        public String primaryTitle = "Welcome %player% to MOTD";
+        public String secondaryTitle = "Fully Customizable";
+        public boolean isMajor = true;
+        public float duration = 5.0f;
+        public float fadeInDuration = 1.5f;
+        public float fadeOutDuration = 1.5f;
+        public boolean randomizeTitle = false;
+        public String permGroup = "%commandPermissions%";
+        public boolean enabled = true;
+        public FirstJoin firstJoin = new FirstJoin();
 
         private static final String RANDOMIZER_FILE = "randomEventTitles.json";
         private static final Random RANDOM = new Random();
@@ -169,12 +170,12 @@ public class ModConfig {
     }
 
     public static class Announcement {
-        public boolean isMajor;
-        public float duration;
-        public float fadeInDuration;
-        public float fadeOutDuration;
-        public String permGroup;
-        public boolean enabled;
+        public boolean isMajor = true;
+        public float duration = 5.0f;
+        public float fadeInDuration = 1.5f;
+        public float fadeOutDuration = 1.5f;
+        public String permGroup = "%commandPermissions%";
+        public boolean enabled = true;
 
         //Getters
         public boolean isMajor() {
@@ -237,8 +238,8 @@ public class ModConfig {
     }
 
     public static class UpdateAvailable {
-        public String permGroup;
-        public boolean enabled;
+        public String permGroup = "%commandPermissions%";
+        public boolean enabled = true;
 
         public String getPermGroup() {
             if ("%commandPermissions%".equals(permGroup)) {
