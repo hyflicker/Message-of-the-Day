@@ -283,7 +283,7 @@ public class ModConfig {
                     }
                 }
             } catch (Exception e) {
-                LOGGER.atSevere().withCause(e).log("Failed to parse randomizer file: " + WelcomeBanner.RANDOMIZER_FILE);
+                LOGGER.atSevere().withCause(e).log("Failed to parse randomizer file: " + RANDOMIZER_FILE);
             }
             return fallback;
         }
@@ -445,6 +445,7 @@ public class ModConfig {
                 return loaded;
             }
         } catch (Exception e) {
+            LOGGER.atSevere().withCause(e).log("Failed to load/repair config: " + path);
             return new ModConfig();
         }
     }
