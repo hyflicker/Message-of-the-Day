@@ -100,6 +100,10 @@ public class ModConfig {
             return enabled;
         }
 
+        public FirstJoin getFirstJoin() {
+            return firstJoin;
+        }
+
         // Setters
         public void setPrimaryTitle(String title) {
             this.primaryTitle = title;
@@ -144,6 +148,119 @@ public class ModConfig {
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
             ModConfig.save();
+        }
+
+        public static class FirstJoin {
+            public String primaryTitle = "%welcomeBanner%";
+            public String secondaryTitle = "%welcomeBanner%";
+            public boolean enabled = true;
+            public ServerAnnouncement serverAnnounce = new ServerAnnouncement();
+
+            public ServerAnnouncement getServerAnnounce() {
+                return serverAnnounce;
+            }
+
+            public String getPrimaryTitle(String parentFallback) {
+                if ("%welcomeBanner%".equals(primaryTitle)) {
+                    return parentFallback;
+                }
+                return primaryTitle;
+            }
+
+            public String getSecondaryTitle(String parentFallback) {
+                if ("%welcomeBanner%".equals(secondaryTitle)) {
+                    return parentFallback;
+                }
+                return secondaryTitle;
+            }
+
+            public boolean isEnabled() { return enabled; }
+
+            public void setPrimaryTitle(String title) {
+                this.primaryTitle = title;
+                ModConfig.save();
+            }
+
+            public void setSecondaryTitle(String title) {
+                this.secondaryTitle = title;
+                ModConfig.save();
+            }
+
+            public void setEnabled(boolean enabled) {
+                this.enabled = enabled;
+                ModConfig.save();
+            }
+
+            public static class ServerAnnouncement{
+                public String primaryTitle = "%player% has joined the server";
+                public String secondaryTitle = "New User Has Joined";
+                public boolean isMajor = false;
+                public float duration = 5.0f;
+                public float fadeInDuration = 1.5f;
+                public float fadeOutDuration = 1.5f;
+                public boolean enabled = false;
+
+
+                public String getPrimaryTitle() {
+                    return primaryTitle;
+                }
+
+                public void setPrimaryTitle(String primaryTitle) {
+                    this.primaryTitle = primaryTitle;
+                    ModConfig.save();
+                }
+
+                public String getSecondaryTitle() {
+                    return secondaryTitle;
+                }
+
+                public void setSecondaryTitle(String secondaryTitle) {
+                    this.secondaryTitle = secondaryTitle;
+                    ModConfig.save();
+                }
+
+                public boolean isEnabled() {
+                    return enabled;
+
+                }
+
+                public void setEnabled(boolean enabled) {
+                    this.enabled = enabled;
+                    ModConfig.save();
+                }
+
+                public boolean isMajor() {
+                    return isMajor;
+                }
+
+                public void setMajor(boolean major) {
+                    isMajor = major;
+                }
+
+                public float getDuration() {
+                    return duration;
+                }
+
+                public void setDuration(float duration) {
+                    this.duration = duration;
+                }
+
+                public float getFadeInDuration() {
+                    return fadeInDuration;
+                }
+
+                public void setFadeInDuration(float fadeInDuration) {
+                    this.fadeInDuration = fadeInDuration;
+                }
+
+                public float getFadeOutDuration() {
+                    return fadeOutDuration;
+                }
+
+                public void setFadeOutDuration(float fadeOutDuration) {
+                    this.fadeOutDuration = fadeOutDuration;
+                }
+            }
         }
 
         private String getRandomValueFromJson(String key, String fallback) {
@@ -304,41 +421,28 @@ public class ModConfig {
             }
 
             if (!Files.exists(path)) {
-                String defaultContent = """
-                    {
-                        "commandPermissions": "hytale:admin",
-                        "welcomeBanner": {
-                            "primaryTitle": "Welcome %player% to MOTD",
-                            "secondaryTitle": "Full Customizable",
-                            "isMajor": true,
-                            "duration": 5.0,
-                            "fadeInDuration": 1.5,
-                            "fadeOutDuration": 1.5,
-                            "randomizeTitle": false,
-                            "permGroup": "%commandPermissions%",
-                            "enabled": true
-                        },
-                        "announcement": {
-                            "isMajor": true,
-                            "duration": 5.0,
-                            "fadeInDuration": 1.5,
-                            "fadeOutDuration": 1.5,
-                            "permGroup": "%commandPermissions%",
-                            "enabled": true
-                        },
-                        "updateAvailable": {
-                            "permGroup": "hytale.admin",
-                            "enabled": true
-                        }
-                    }""";
-                Files.writeString(path, defaultContent, StandardCharsets.UTF_8);
+                // No file at all? Create a fresh one with all current defaults.
+                instance = new ModConfig();
+                save();
+                return instance;
             }
 
             try (BufferedReader br = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-                 JsonReader reader = new JsonReader(br)) {
+                JsonReader reader = new JsonReader(br)) {
                 reader.setStrictness(Strictness.LENIENT);
                 ModConfig loaded = GSON.fromJson(reader, ModConfig.class);
-                return (loaded != null) ? loaded : new ModConfig();
+
+                if (loaded == null) return new ModConfig();
+                if (loaded.welcomeBanner == null) loaded.welcomeBanner = new WelcomeBanner();
+                if (loaded.welcomeBanner.firstJoin == null) loaded.welcomeBanner.firstJoin = new WelcomeBanner.FirstJoin();
+                if(loaded.welcomeBanner.firstJoin.serverAnnounce == null) loaded.welcomeBanner.firstJoin.serverAnnounce = new WelcomeBanner.FirstJoin.ServerAnnouncement();
+                if (loaded.announcement == null) loaded.announcement = new Announcement();
+                if (loaded.updateAvailable == null) loaded.updateAvailable = new UpdateAvailable();
+                if (loaded.commandPermissions == null) loaded.commandPermissions = "hytale:admin";
+                instance = loaded;
+                save();
+
+                return loaded;
             }
         } catch (Exception e) {
             return new ModConfig();
