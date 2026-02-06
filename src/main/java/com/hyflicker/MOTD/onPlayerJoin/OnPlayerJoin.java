@@ -22,6 +22,9 @@ public class OnPlayerJoin{
         if (bannerConfig.enabled || bannerConfig.firstJoin.enabled) {
             sendMotdTitle(playerRef, bannerConfig, player);
         }
+        if(player.isFirstSpawn() && bannerConfig.firstJoin.serverAnnounce.enabled){
+            sendMotdTitleUniverse(bannerConfig,player);
+        }
     }
 
     public static Message formatMessage(String template, Player player) {
@@ -51,6 +54,18 @@ public class OnPlayerJoin{
                 bannerConfig.duration,
                 bannerConfig.fadeInDuration,
                 bannerConfig.fadeOutDuration
+        );
+    }
+    public static void sendMotdTitleUniverse(ModConfig.WelcomeBanner bannerConfig, Player player) {
+        EventTitleUtil.showEventTitleToUniverse(
+                formatMessage(bannerConfig.firstJoin.serverAnnounce.getPrimaryTitle(), player),
+                formatMessage(bannerConfig.firstJoin.serverAnnounce.getSecondaryTitle(), player),
+                bannerConfig.firstJoin.serverAnnounce.isMajor,
+//                (String)null,
+                null,
+                bannerConfig.firstJoin.serverAnnounce.duration,
+                bannerConfig.firstJoin.serverAnnounce.fadeInDuration,
+                bannerConfig.firstJoin.serverAnnounce.fadeOutDuration
         );
     }
 }
