@@ -28,16 +28,23 @@ public class OnPlayerJoin{
         if (template == null || template.isEmpty()) {
             return Message.raw("");
         }
-
         String processed = template.replace("%player%", player.getDisplayName());
         return Message.raw(processed);
     }
 
     public static void sendMotdTitle(PlayerRef playerRef, ModConfig.WelcomeBanner bannerConfig, Player player) {
+        //These get set by WelcomeBanner primary/secondary titles if randomized is turned on it returns randomized titles.
+        Message primaryTitle = formatMessage(bannerConfig.getPrimaryTitle(), player);
+        Message secondaryTitle = formatMessage(bannerConfig.getSecondaryTitle(), player);
+        if(player.isFirstSpawn() && bannerConfig.firstJoin.enabled){
+            primaryTitle = formatMessage(bannerConfig.firstJoin.getPrimaryTitle(bannerConfig.getPrimaryTitle()), player);
+            secondaryTitle = formatMessage(bannerConfig.firstJoin.getSecondaryTitle(bannerConfig.getSecondaryTitle()), player);
+        }
+
         EventTitleUtil.showEventTitleToPlayer(
                 playerRef,
-                formatMessage(bannerConfig.getPrimaryTitle(), player),
-                formatMessage(bannerConfig.getSecondaryTitle(), player),
+                primaryTitle,
+                secondaryTitle,
                 bannerConfig.isMajor,
 //                (String)null,
                 null,
