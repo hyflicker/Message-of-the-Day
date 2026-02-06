@@ -12,7 +12,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Random;
@@ -146,14 +148,15 @@ public class ModConfig {
 
         private String getRandomValueFromJson(String key, String fallback) {
             // Resolve path relative to the "Message of the Day Config" folder
-            Path path = ModConfig.resolvePath().getParent().resolve(WelcomeBanner.RANDOMIZER_FILE);
+            Path path = ModConfig.resolvePath().getParent().resolve(RANDOMIZER_FILE);
 
             if (!Files.exists(path)) {
                 return fallback;
             }
 
             try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-                Type type = new TypeToken<java.util.Map<String, List<String>>>(){}.getType();
+                Type type = new TypeToken<java.util.Map<String, List<String>>>() {
+                }.getType();
                 java.util.Map<String, List<String>> data = GSON.fromJson(reader, type);
 
                 if (data != null && data.containsKey(key)) {
@@ -293,10 +296,10 @@ public class ModConfig {
             Path defaultJson = configFolder.resolve("randomEventTitles.json");
             if (!Files.exists(defaultJson)) {
                 String jsonContent = """
-                {
-                  "primaryTitle": ["Welcome %player%!", "Greetings!", "Hello!"],
-                  "secondaryTitle": ["Glad you are here", "Enjoy the game", "Welcome back"]
-                }""";
+                        {
+                          "primaryTitle": ["Welcome %player%!", "Greetings!", "Hello!"],
+                          "secondaryTitle": ["Glad you are here", "Enjoy the game", "Welcome back"]
+                        }""";
                 Files.writeString(defaultJson, jsonContent, StandardCharsets.UTF_8);
             }
 
