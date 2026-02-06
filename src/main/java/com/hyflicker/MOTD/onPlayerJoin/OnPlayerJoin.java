@@ -5,18 +5,21 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
 
 import java.awt.*;
 
 public class OnPlayerJoin{
     public static void welcomeBanner(PlayerReadyEvent event){
-
         ModConfig.WelcomeBanner bannerConfig = ModConfig.get().welcomeBanner;
-        if (bannerConfig.enabled) {
-            Player player = event.getPlayer();
-            PlayerRef playerRef = event.getPlayerRef().getStore().getComponent(event.getPlayerRef(),PlayerRef.getComponentType());
-
+        Player player = event.getPlayer();
+        String playerName = player.getDisplayName();
+        PlayerRef playerRef = Universe.get().getPlayers().stream()
+                .filter(p -> p.getUsername().equalsIgnoreCase(playerName))
+                .findFirst()
+                .orElse(null);
+        if (bannerConfig.enabled || bannerConfig.firstJoin.enabled) {
             sendMotdTitle(playerRef, bannerConfig, player);
         }
     }
