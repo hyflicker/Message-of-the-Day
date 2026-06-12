@@ -3,13 +3,12 @@ package com.hyflicker.MOTD.Commands;
 import com.hyflicker.MOTD.Configuration.ModConfig;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class Announcement extends CommandBase {
+public class Announcement extends MotdSubCommand {
     public Announcement() {
         super("announcement", "Announces to all players the text provided");
         this.setAllowsExtraArguments(true);

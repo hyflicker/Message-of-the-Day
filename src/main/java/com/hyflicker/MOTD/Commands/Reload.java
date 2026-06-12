@@ -8,10 +8,9 @@ import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class Reload extends CommandBase {
+public class Reload extends MotdSubCommand {
     public Reload() {
         super("reload", "Reloads the MOTD configuration.");
-        this.requirePermission(ModConfig.get().commandPermissions);
     }
 
     @Override

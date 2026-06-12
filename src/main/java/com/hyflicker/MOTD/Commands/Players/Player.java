@@ -1,5 +1,6 @@
 package com.hyflicker.MOTD.Commands.Players;
 
+import com.hyflicker.MOTD.Commands.MotdSubCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hyflicker.MOTD.Configuration.ModConfig;
@@ -11,10 +12,9 @@ import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class Player extends CommandBase {
+public class Player extends MotdSubCommand {
     public Player() {
         super("player", "Returns a list of players");
-        this.requirePermission(ModConfig.get().commandPermissions);
         this.setAllowsExtraArguments(true);
     }
 
