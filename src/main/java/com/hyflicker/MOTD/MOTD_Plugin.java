@@ -23,7 +23,7 @@ public class MOTD_Plugin extends JavaPlugin {
         UpdateAvailable.loadVersionFromManifest();
 
         this.getEventRegistry().registerGlobal(PlayerReadyEvent.class, this::onPlayerReady);
-        this.getCommandRegistry().registerCommand(new Motd(this.getName()));
+        getCommandRegistry().registerCommand(new Motd("Message of the Day"));
     }
 
     public void onPlayerReady(PlayerReadyEvent event) {
