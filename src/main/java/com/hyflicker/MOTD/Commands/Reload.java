@@ -3,7 +3,6 @@ package com.hyflicker.MOTD.Commands;
 import com.hyflicker.MOTD.Configuration.ModConfig;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 
 import javax.annotation.Nonnull;
 import java.awt.*;

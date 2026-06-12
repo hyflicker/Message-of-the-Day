@@ -6,7 +6,6 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hyflicker.MOTD.Configuration.ModConfig;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
 
 import javax.annotation.Nonnull;
