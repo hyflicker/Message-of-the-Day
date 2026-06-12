@@ -3,9 +3,11 @@ package com.hyflicker.MOTD;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hyflicker.MOTD.Configuration.ModConfig;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import java.awt.*;
 import java.io.InputStreamReader;
@@ -36,9 +38,15 @@ public class UpdateAvailable {
     public static void checkOnJoin(PlayerReadyEvent event) {
         ModConfig.UpdateAvailable config = ModConfig.get().updateAvailable;
         if (!config.enabled) return;
+        Ref<EntityStore> entityRef = event.getPlayerRef();
+        PlayerRef playerRef = entityRef.getStore().getComponent(entityRef, PlayerRef.getComponentType());
+        if (playerRef == null) return;
 
-        Player player = event.getPlayer();
-        if (player.hasPermission(config.getPermGroup())) {
+        String configNode = config.getPermGroup();
+        boolean isAuthorized = playerRef.hasPermission(configNode)
+                || playerRef.hasPermission("hytale.admin")
+                || playerRef.hasPermission("hytale.command.op");
+        if (isAuthorized) {
             fetchVersionFromMiddleware().thenAccept(latest -> {
                 if (latest != null) {
                     // Normalize: strip the 'v' prefix if it exists
@@ -49,7 +57,7 @@ public class UpdateAvailable {
                     // Use the helper instead of !equalsIgnoreCase
                     assert currentVersion != null;
                     if (isUpdateAvailable(normalizedLatest)) {
-                        sendUpdateNotice(player, latest);
+                        sendUpdateNotice(playerRef, latest);
                     }
                 }
             });
@@ -84,7 +92,7 @@ public class UpdateAvailable {
         });
     }
 
-    private static void sendUpdateNotice(Player player, String latest) {
+    private static void sendUpdateNotice(PlayerRef player, String latest) {
         player.sendMessage(Message.raw("[MOTD] A new update is available!")
                 .color("#00FFFF").bold(true));
         assert currentVersion != null;
