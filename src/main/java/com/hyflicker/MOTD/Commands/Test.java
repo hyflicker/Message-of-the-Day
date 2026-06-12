@@ -13,7 +13,7 @@ import java.util.UUID;
 
 import static com.hyflicker.MOTD.onPlayerJoin.OnPlayerJoin.sendMotdTitle;
 
-public class Test extends CommandBase {
+public class Test extends MotdSubCommand {
     public Test() {
         super("test", "Previews the MOTD title to yourself.");
     }
