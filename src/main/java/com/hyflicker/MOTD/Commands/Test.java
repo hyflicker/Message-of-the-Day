@@ -6,9 +6,11 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.UUID;
 
 import static com.hyflicker.MOTD.onPlayerJoin.OnPlayerJoin.sendMotdTitle;
 
@@ -20,23 +22,35 @@ public class Test extends CommandBase {
 
     @Override
     protected void executeSync(@Nonnull CommandContext ctx) {
-        if (ctx.sender() instanceof Player player) {
-            // We capture the world and player data here
-            var world = player.getWorld();
+        // 1. Intercept the sender as a PlayerRef (this evaluates to true when a player runs the command)
+        if (ctx.sender() instanceof PlayerRef playerRef) {
 
-            // Move the execution to the World Thread to satisfy the Store assertion
-            assert world != null;
+            // Grab the world context via the player's current session
+            UUID worldUuid = playerRef.getWorldUuid();
+            if (worldUuid == null) return;
+
+            var world = Universe.get().getWorld(worldUuid);
+            if (world == null) return;
+
+            // 2. Offload to the World Thread to safely access the EntityStore
             world.execute(() -> {
-                var ref = player.getReference();
+                var ref = playerRef.getReference();
                 if (ref != null && ref.isValid()) {
                     var store = ref.getStore();
-                    // This call now succeeds because we are in the 'WorldThread'
-                    PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
 
-                    if (playerRef != null) {
+                    // 3. THE SECRET: Grab the Player component directly out of the ECS store
+                    // This is fully supported, non-deprecated, and lightning fast.
+                    Player player = store.getComponent(ref, Player.getComponentType());
+
+                    if (player != null) {
                         ModConfig.WelcomeBanner config = ModConfig.get().welcomeBanner;
-                        sendMotdTitle(playerRef, config, player);
+                        String playerName = playerRef.getUsername();
+
+                        // 4. Both objects are now resolved! Pass them directly to your function
+                        sendMotdTitle(playerRef, config, player, playerName);
                         ctx.sendMessage(Message.raw("Previewing MOTD titles...").color(Color.YELLOW));
+                    } else {
+                        ctx.sendMessage(Message.raw("Error: Active player world-component not found.").color(Color.RED));
                     }
                 }
             });
